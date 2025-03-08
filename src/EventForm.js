@@ -20,7 +20,7 @@ function EventForm() {
         const locationStr = encodeURIComponent(formData.eventLocation);
 
         const response = await axios.get(`http://localhost:3001/api/google?input=${locationStr}`);
-        
+
         setLocation(response.data);
     }
 
@@ -68,8 +68,11 @@ function EventForm() {
 
             {location && (
                 <p>
-                    Location Data:<br />
-                    {JSON.stringify(location)}
+                    <b>Location Data:</b><br />
+                    <b>Name:</b> {JSON.stringify(location.location)}
+                    <br />
+                    <b>Address:</b> {JSON.stringify(location.formattedAddress)}
+                    
                 </p>
             )}
         </div>
