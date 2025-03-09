@@ -8,9 +8,9 @@ function App() {
   return (
     <div className="App">
       <h1>Event Weather App</h1>
-      <h2>Know the weather at the event</h2>
-      <h3>100% FREE for all.</h3>
-      
+      <h3>Know the weather at the event<br />
+      100% FREE for all.</h3>
+
       {/* Use BrowserRouter to handle navigation */}
       <BrowserRouter>
         {/* <NavBar /> */}
