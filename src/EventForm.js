@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function EventForm() {
     // useState to store the form data
@@ -7,7 +7,7 @@ function EventForm() {
         eventDate: "2025-06-01", 
         searchYears: "3"});
 
-    const [location, setLocation] = useState(null);
+        const navigate = useNavigate();
 
     // Handle Submit function - puts form data in local storage
     const handleSubmit = async (e) => {
@@ -17,11 +17,9 @@ function EventForm() {
         localStorage.setItem("eventDate", formData.eventDate);
         localStorage.setItem("searchYears", formData.searchYears);
 
-        const locationStr = encodeURIComponent(formData.eventLocation);
+        // Forward to the confirm inputs page:
+        navigate('/confirm');
 
-        const response = await axios.get(`http://localhost:3001/api/google?input=${locationStr}`);
-
-        setLocation(response.data);
     }
 
     // Handle user input in the form - update the form data useState
@@ -65,16 +63,7 @@ function EventForm() {
                 <button type="submit">Go!</button>
 
             </form>
-
-            {location && (
-                <p>
-                    <b>Location Data:</b><br />
-                    <b>Name:</b> {JSON.stringify(location.location)}
-                    <br />
-                    <b>Address:</b> {JSON.stringify(location.formattedAddress)}
-                    
-                </p>
-            )}
+            
         </div>
     )   // END return
 
