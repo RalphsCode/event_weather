@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GoogleMap from './GoogleMap';
+import FipsAPI from './FipsAPI';
 
 const ConfirmInputs = () => {
     const [locationData, setLocationData] = useState(null);
@@ -32,10 +33,23 @@ const ConfirmInputs = () => {
         fetchData();
     }, []); // Effect runs once on mount
 
+    // Do a useEffect to Call the FIPS API server
+    useEffect(() =>{
+        const fetchFIPS = async () => {
+            try {
+                const FIPS = await FipsAPI(locationData.lat, locationData.lng);
+                localStorage.setItem("FIPS", FIPS);
+            } catch (err) {
+                console.log("Error trying to execute fetchFIPS:", err);
+            }
+        }   // END fetchFIPS()
+        fetchFIPS();
+    }, [locationData]);     // END useEffect
+
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
     if (!locationData) return <p>No location data found.</p>;
-    console.log("locationData.formattedAddress.toLowerCase():", locationData.formattedAddress.toLowerCase());
     if (!locationData.formattedAddress.toLowerCase().includes("usa") && !locationData.formattedAddress.toLowerCase().includes("united states") ) {
         return ( 
             <>
@@ -44,25 +58,24 @@ const ConfirmInputs = () => {
             </>
         )}
 
+    localStorage.setItem("locationData", JSON.stringify(locationData));
+
     return (
         <div>
-            <h2>Confirm Your Event Details...</h2>
+            <h2>Does this look right:</h2>
             <p>
                 <b>Event Location:</b>{localStorage.getItem('eventLocation')}<br />
-                <b>AKA:</b> {locationData.location}<br />
-                <b>Address:</b> {locationData.formattedAddress}
-            </p>
-            <p>
+                <b>Address:</b> {locationData.formattedAddress}<br />
                 <b>Event Date:</b> {localStorage.getItem('eventDate')}<br />
                 <b>Search Years:</b> {localStorage.getItem('searchYears')}
             </p>
 
-            <button onClick={() => window.history.back()}>Edit</button>
-            <button>Looks Good!</button>
+            <button onClick={() => window.history.back()}>Change</button>
+            <button>Yep! Looks Good</button>
 
             {/* Include the Google Maps component */}
             <div>
-                <h2>Location Map</h2>
+                <h2>{locationData.location}</h2>
                 <GoogleMap 
                     lat={locationData.lat} 
                     lng={locationData.lng} 

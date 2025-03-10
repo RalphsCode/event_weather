@@ -22,7 +22,7 @@ const GoogleMapsAPI = async (searchString) => {
             
             }   // END try
         catch (err) {
-            console.error("Error fetching location data:", err);
+            console.error("Error fetching Google location data:", err);
         }   // END catch
 
 }   // END GoogleMapsAPI()

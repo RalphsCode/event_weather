@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 function EventForm() {
     // useState to store the form data
-    const [formData, setFormData] = useState({eventLocation: "San Diego, CA", 
-        eventDate: "2025-06-01", 
-        searchYears: "3"});
+    const [formData, setFormData] = useState({
+        eventLocation: localStorage.getItem('eventLocation') || "San Diego, CA", 
+        eventDate: localStorage.getItem('eventDate') || "2025-07-15",
+        searchYears: localStorage.getItem('searchYears') || "3"
+    });
 
         const navigate = useNavigate();
 
