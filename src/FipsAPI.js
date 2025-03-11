@@ -10,6 +10,8 @@ const FipsAPI = async (lat, lng) => {
         return FIPS;
     } catch (err) {
         console.log("Error in FIPS API data retrieval:", err);
+        // Use a default FIPS for continuation: 06075 (San Francisco)
+        return '06075';
     }
 }   // END FipsAPI()
 

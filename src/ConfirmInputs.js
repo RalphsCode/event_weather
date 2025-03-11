@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GoogleMap from './GoogleMap';
 import FipsAPI from './FipsAPI';
+import makeDates from './makeDates';
 
 const ConfirmInputs = () => {
     const [locationData, setLocationData] = useState(null);
@@ -60,11 +61,18 @@ const ConfirmInputs = () => {
 
     localStorage.setItem("locationData", JSON.stringify(locationData));
 
+    const eventDate = localStorage.getItem('eventDate');
+    const searchYears = localStorage.getItem('searchYears');
+    
+    const datesArr = makeDates(eventDate, searchYears);
+
+    console.log("datesArr:", datesArr);
+
     return (
         <div>
             <h2>Does this look right:</h2>
             <p>
-                <b>Event Location:</b>{localStorage.getItem('eventLocation')}<br />
+                <b>Event Location:</b> {localStorage.getItem('eventLocation')}<br />
                 <b>Address:</b> {locationData.formattedAddress}<br />
                 <b>Event Date:</b> {localStorage.getItem('eventDate')}<br />
                 <b>Search Years:</b> {localStorage.getItem('searchYears')}
