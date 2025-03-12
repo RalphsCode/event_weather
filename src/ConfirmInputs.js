@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GoogleMap from './GoogleMap';
-import FipsAPI from './FipsAPI';
 import makeDates from './makeDates';
 
 const ConfirmInputs = () => {
@@ -38,10 +37,14 @@ const ConfirmInputs = () => {
     useEffect(() =>{
         const fetchFIPS = async () => {
             try {
-                const FIPS = await FipsAPI(locationData.lat, locationData.lng);
+                setLoading(true);
+                const FIPS = await axios.get(`http://localhost:3001/api/fips?lat=${locationData.lat}&lng=${locationData.lng}`);
+
                 localStorage.setItem("FIPS", FIPS);
+                setLoading(false);
             } catch (err) {
-                console.log("Error trying to execute fetchFIPS:", err);
+                console.log("Error trying to execute fetchFIPS API call:", err);
+                setLoading(false);
             }
         }   // END fetchFIPS()
         fetchFIPS();
