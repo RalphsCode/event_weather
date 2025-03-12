@@ -37,14 +37,14 @@ const ConfirmInputs = () => {
     useEffect(() =>{
         const fetchFIPS = async () => {
             try {
-                setLoading(true);
-                const FIPS = await axios.get(`http://localhost:3001/api/fips?lat=${locationData.lat}&lng=${locationData.lng}`);
+                // Only proceed if we have location data with coordinates
+                if (!locationData || !locationData.lat || !locationData.lng) return;
 
+                const response = await axios.get(`http://localhost:3001/api/fips?lat=${locationData.lat}&lng=${locationData.lng}`);
+                const FIPS = response.data;
                 localStorage.setItem("FIPS", FIPS);
-                setLoading(false);
             } catch (err) {
                 console.log("Error trying to execute fetchFIPS API call:", err);
-                setLoading(false);
             }
         }   // END fetchFIPS()
         fetchFIPS();
@@ -82,7 +82,7 @@ const ConfirmInputs = () => {
             </p>
 
             <button onClick={() => window.history.back()}>Change</button>
-            <button>Yep! Looks Good</button>
+            <button onClick={() => window.location.href = "/wxData"}>Yep! Looks Good</button>
 
             {/* Include the Google Maps component */}
             <div>

@@ -2,12 +2,16 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import EventForm from './EventForm';
 import ConfirmInputs from './ConfirmInputs';
+import GetWxData from './GetWxData';
+
 // import NavBar from './NavBar';
 
 function App() {
   return (
     <div className="App">
-      <h1>Event Weather App</h1>
+      <h1><img src="/android-chrome-192x192.png" alt='App Icon' width="50" text-align= "center" />
+      &nbsp;Event Weather App</h1>
+      
       <h3>Know the weather in advance!<br />
       100% FREE for all.</h3>
 
@@ -17,6 +21,7 @@ function App() {
         <Routes>
           <Route path="/form" element={<EventForm />} />
           <Route path="/confirm" element={<ConfirmInputs />} />
+          <Route path="/wxData" element={<GetWxData />} />
           <Route path="/" element={<EventForm />} />
         </Routes>
       </BrowserRouter>
