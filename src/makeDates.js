@@ -22,8 +22,8 @@ function makeDates(eventDate, inYears) {
         const makeDate = `${i}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         datesArr.push(makeDate);
     } // END for loop...
-    localStorage.setItem("Dates Array:", datesArr);
-    return datesArr;
+    localStorage.setItem("datesArr", JSON.stringify(datesArr));
+    return true;
 }       // END makeDates()
 
 export default makeDates;
