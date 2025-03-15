@@ -1,3 +1,10 @@
+# The Event Weather App
+## Enter a location and a date, and see the weather history (did it rain? What was the temperature?) for that day for the past 10 years.
+
+Great for Sports Events, Weddings, Vacations, Conferences, Birthdays, etc...
+
+### There is this front-end and a back-end that manages the API calls.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

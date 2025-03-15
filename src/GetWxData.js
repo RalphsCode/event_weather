@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import processADay from './processADay';
 
 const GetWxData = () => {
     const [loading, setLoading] = useState(true);
@@ -47,19 +48,35 @@ const GetWxData = () => {
     }
     
     return (
-        <div>
+        <div className="weather-container">
             <h2>Weather Data Results</h2>
             {wxData.length > 0 ? (
-                <div>
+                <div className="weather-results">
+                    <p>Weather data retrieved for {wxData.length} date(s)</p>
                     
-                    {/* Display your weather data here */}
-                    <p> Weather data retrieved {wxData.length}</p>
-                    {/* <ul>
-                        {wxData.map(res => <li>{res}</li>)}
-                    </ul> */}
+                    {wxData.map((yearData, index) => (
+                        <div key={index} className="year-data">
+                            <h3>Weather for {yearData.date}</h3>
+                            {/* Display the data from each year */}
+                            <div className="weather-details">
+                                {Object.entries(yearData)
+                                    .filter(([key]) => key !== 'date') // Skip the date field we added
+                                    .map(([key, value]) => (
+                                        <div key={key} className="weather-item">
+                                            <strong>{key}:</strong> {
+                                                typeof value === 'object' 
+                                                    ? JSON.stringify(value) 
+                                                    : value
+                                            }
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    ))}
                 </div>
             ) : (
-                <p>No weather data found.</p>
+                <p>No weather data found for the selected dates.</p>
             )}
         </div>
     );
