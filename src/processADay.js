@@ -35,10 +35,10 @@ function processADay(pointDate, data) {
 
     // Loop thru the day's data received from NCDC, and
     // populate the PRCP & TAVG arrays
-    for (const entry of data.results) {
+    for (const entry of data) {
 
         // check for PRCP in the data:
-        if (entry.datatype == "PRCP"){
+        if (entry.datatype === "PRCP"){
             if (entry.value > 0.02) {   // don't count insignificant rain
                 // if there was rain enter a true in the rain arr, no-rain: false
                 pointPRCP.push(true);
@@ -47,7 +47,7 @@ function processADay(pointDate, data) {
             }
            
         // check for TAVG in the data:    
-        } else if (entry.datatype == "TAVG"){
+        } else if (entry.datatype === "TAVG"){
             // push the temp value into the temp arr
             pointTAVG.push(entry.value)
         }
@@ -86,13 +86,19 @@ function processADay(pointDate, data) {
 
 
     // Process the TAVG data to calculate the median Temp for the day:
-    const dayTAVG = pointTAVG.length > 0 ? findMedian(pointTAVG) : null;
+    let dayTAVG = null;
+    let dayTMAX = null;
+    let dayTMIN = null;
+
+    if (pointTAVG.length > 0) {
+        dayTAVG =  findMedian(pointTAVG)};
+        dayTMIN = Math.min(...pointTAVG);
+        dayTMAX = Math.max(...pointTAVG);
+
 
     // Create result object with the date as key
     const result = {};
-    result[pointDate] = {"rain": dayPRCPbool, "temp": dayTAVG};
-    
-    console.log("Days weather result:", result);
+    result[pointDate] = { "rain": dayPRCPbool, "temp": dayTAVG, "maxTemp": dayTMAX, "minTemp": dayTMIN };
     
     return result;
 }   // END processDay()
