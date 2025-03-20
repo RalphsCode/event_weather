@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import processADay from './processADay';
+import { useNavigate } from 'react-router-dom'; // Import for navigation
+
+// Create a flag outside the component to track if the fetch has been initiated
+let fetchHasStarted = false;
 
 const GetWxData = () => {
     const [loading, setLoading] = useState(true);
     const [wxData, setWxData] = useState([]);
     const [progress, setProgress] = useState({ current: 0, total: 0 });
     const [requestStatuses, setRequestStatuses] = useState({});
+    const navigate = useNavigate(); // For navigation
     
     useEffect(() => {
         const fetchWeatherData = async () => {
+            // If we've already started fetching data, don't do it again
+            if (fetchHasStarted) {
+                console.log("Fetch already initiated, skipping duplicate fetch");
+                return;
+            }
+            
+            // Mark that we've started fetching
+            fetchHasStarted = true;
+            console.log("Starting weather data fetch - first time");
+            
             try {
                 // Get data from localStorage 
                 const datesArr = JSON.parse(localStorage.getItem("datesArr")) || ['2023-06-01', '2022-06-01', '2021-06-01'];
@@ -33,11 +48,12 @@ const GetWxData = () => {
                     // Update status to "loading" for current date
                     setRequestStatuses(prev => ({
                         ...prev,
-                        [date]: "loading"
+                        [date]: "Searching"
                     }));
                     
                     try {
                         // Make the API request and await the response
+                        console.log(`Making API request for date: ${date}`);
                         const response = await axios.get(`http://localhost:3001/api/noaa?date=${date}&FIPS=${FIPS}`);
                         
                         // Make sure we have data before processing
@@ -84,6 +100,15 @@ const GetWxData = () => {
                 if (allResults.length > 0) {
                     console.log("All processed results:", allResults);
                     setWxData(allResults);
+                    
+                    // Store the processed results in localStorage for access in the results page
+                    localStorage.setItem('weatherResults', JSON.stringify(allResults));
+                    
+                    // Add a small delay before navigation to ensure UI updates
+                    setTimeout(() => {
+                        // Navigate to results page
+                        navigate('/results');
+                    }, 1000); // 1 second delay
                 } else {
                     console.error("No weather data was successfully processed");
                 }
@@ -96,7 +121,7 @@ const GetWxData = () => {
         };
 
         fetchWeatherData();
-    }, []);     // Execute at mount
+    }, [navigate]); // Add navigate to dependencies
     
     if (loading) {
         return (
@@ -129,12 +154,12 @@ const GetWxData = () => {
                                         padding: '2px 8px',
                                         borderRadius: '4px',
                                         backgroundColor: 
-                                            status === 'complete' ? '#d4edda' :
-                                            status === 'loading' ? '#cce5ff' :
+                                            status.includes('complete') ? '#d4edda' :
+                                            status === 'Searching' ? '#cce5ff' :
                                             status === 'error' ? '#f8d7da' : '#e2e3e5',
                                         color:
-                                            status === 'complete' ? '#155724' :
-                                            status === 'loading' ? '#004085' :
+                                            status.includes('complete') ? '#155724' :
+                                            status === 'Searching' ? '#004085' :
                                             status === 'error' ? '#721c24' : '#383d41'
                                     }}>
                                         {status}
@@ -151,21 +176,31 @@ const GetWxData = () => {
     return (
         <div className="weather-container">
             <h2>Weather Data Results</h2>
-            {wxData.map((result, index) => {
-            // If result is an object, display it
-                if (result && typeof result === 'object') {
-                    return (
-                        <div key={index} className="weather-result">
-                            {Object.entries(result).map(([key, value]) => (
-                                <div key={key}>
-                                    <strong>{key}:</strong> {JSON.stringify(value)}
-                                </div>
-                            ))}
-                        </div>
-                    );
-                }   // END if statement
-
-                })} 
+            <p>All data has been loaded! Redirecting to results page...</p>
+            {/* Progress indicator for redirect */}
+            <div style={{ 
+                width: '100%', 
+                backgroundColor: '#e0e0e0', 
+                borderRadius: '4px',
+                height: '10px',
+                marginBottom: '20px'
+            }}>
+                <div style={{ 
+                    width: '100%',
+                    height: '10px',
+                    backgroundColor: '#3f51b5',
+                    borderRadius: '4px',
+                    transition: 'width 1s',
+                    animation: 'pulse 1s infinite'
+                }}/>
+            </div>
+            <style jsx>{`
+                @keyframes pulse {
+                    0% { opacity: 0.6; }
+                    50% { opacity: 1; }
+                    100% { opacity: 0.6; }
+                }
+            `}</style>
         </div>
     );
 };

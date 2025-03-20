@@ -21,6 +21,7 @@ const ConfirmInputs = () => {
                 
                 // Fetch data from my API
                 const response = await axios.get(`http://localhost:3001/api/google?input=${location}`);
+                console.log("Just queried the Google API");
                 setLocationData(response.data);
                 setLoading(false);
             } catch (err) {

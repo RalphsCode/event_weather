@@ -91,10 +91,10 @@ function processADay(pointDate, data) {
     let dayTMIN = null;
 
     if (pointTAVG.length > 0) {
-        dayTAVG =  findMedian(pointTAVG)};
-        dayTMIN = Math.min(...pointTAVG);
-        dayTMAX = Math.max(...pointTAVG);
-
+        dayTAVG =  findMedian(pointTAVG);
+        dayTMIN = Math.min(...pointTAVG) || null;
+        dayTMAX = Math.max(...pointTAVG) || null;
+    }
 
     // Create result object with the date as key
     const result = {};
