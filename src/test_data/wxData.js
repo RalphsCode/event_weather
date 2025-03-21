@@ -1,14 +1,6 @@
 /** Collection of arrays for testing purposes */
 
-export const sampleData = {
-	"metadata": {
-		"resultset": {
-			"offset": 1,
-			"count": 68,
-			"limit": 1000
-		}
-	},
-	"results": [
+export const sampleData = [
 		{
 			"date": "2024-07-15T00:00:00",
 			"datatype": "PRCP",
@@ -485,19 +477,10 @@ export const sampleData = {
 			"attributes": ",,W,",
 			"value": 0.0
 		}
-	]
-}   // END sampleData
+	] // END sampleData
 
 
-export const sampleData1 = {
-	"metadata": {
-		"resultset": {
-			"offset": 1,
-			"count": 4,
-			"limit": 1000
-		}
-	},
-	"results": [
+export const sampleData1 = [
 		{
 			"date": "2024-07-15T00:00:00",
 			"datatype": "PRCP",
@@ -526,19 +509,10 @@ export const sampleData1 = {
 			"attributes": ",,W,2400",
 			"value": 0.0
 		}
-	]
-}   // END sampleData1
+	] // END sampleData1
 
 
-export const sampleData2 = {
-	"metadata": {
-		"resultset": {
-			"offset": 1,
-			"count": 3,
-			"limit": 1000
-		}
-	},
-	"results": [
+export const sampleData2 = [
 		{
 			"date": "2000-07-15T00:00:00",
 			"datatype": "PRCP",
@@ -560,6 +534,70 @@ export const sampleData2 = {
 			"attributes": ",,W,",
 			"value": 58.0
 		}
-	]
-}   // END sampleData2
+	]   // END sampleData2
 
+export const sampleData3 = [];
+
+export const sampleData4 = [
+	{
+		"date": "2024-07-15T00:00:00",
+		"datatype": "TAVG",
+		"station": "GHCND:USR0000CSAD",
+		"attributes": ",,U,",
+		"value": 87.0
+	},
+	{
+		"date": "2024-07-15T00:00:00",
+		"datatype": "TAVG",
+		"station": "GHCND:USR0000CSAU",
+		"attributes": ",,U,",
+		"value": 79.0
+	},
+	{
+		"date": "2024-07-15T00:00:00",
+		"datatype": "TAVG",
+		"station": "GHCND:USR0000CSFD",
+		"attributes": ",,U,",
+		"value": 75.0
+	},
+	{
+		"date": "2024-07-15T00:00:00",
+		"datatype": "TAVG",
+		"station": "GHCND:USR0000CTAN",
+		"attributes": ",,U,",
+		"value": 78.0
+	},
+	{
+		"date": "2024-07-15T00:00:00",
+		"datatype": "TAVG",
+		"station": "GHCND:USR0000CVAY",
+		"attributes": ",,U,",
+		"value": 84.0
+	},
+	{
+		"date": "2024-07-15T00:00:00",
+		"datatype": "TAVG",
+		"station": "GHCND:USR0000CWAR",
+		"attributes": ",,U,",
+		"value": 81.0
+	},
+	{
+		"date": "2024-07-15T00:00:00",
+		"datatype": "TAVG",
+		"station": "GHCND:USR0000CWHH",
+		"attributes": ",,U,",
+		"value": 72.0
+	},
+	{
+		"date": "2024-07-15T00:00:00",
+		"datatype": "TAVG",
+		"station": "GHCND:USR0000CWPK",
+		"attributes": ",,U,",
+		"value": 79.0
+	}
+]	// END sampleData4
+
+// Data for processAnnuals.test.js
+export const sampleData5 = [
+	{"2024-04-12":{"rain":false,"temp":54,"maxTemp":59,"minTemp":48}},{"2023-04-12":{"rain":false,"temp":54,"maxTemp":58,"minTemp":49}},{"2022-04-12":{"rain":false,"temp":47,"maxTemp":60,"minTemp":35}}
+];

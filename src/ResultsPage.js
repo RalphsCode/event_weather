@@ -14,6 +14,7 @@ const ResultsPage = () => {
             try {
                 const parsedResults = JSON.parse(storedResults);
                 setWeatherResults(parsedResults);
+                // Process the daily summaries into an overall result array
                 processAnnuals(parsedResults);
             } catch (err) {
                 console.error("Error parsing stored weather results:", err);

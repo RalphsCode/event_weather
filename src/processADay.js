@@ -1,10 +1,26 @@
-/** Process and summarize all the results received for a particular day.
- * Data to process is received from one NOAA NCDC API call
- * */ 
+/** 
+ * Process and summarize all the results received for a particular day.
+ * 
+ * Data to process is received from an NOAA NCDC API call for data relating to one day.
+ * Pass in:
+ *  (1) the date used in the weather request, 
+ *  (2) The data received from the NCDC API call.
+ * 
+ * This function is called from the GetWxData.js component.
+ * 
+ * Returns an object containing a days summary. 
+ * Example output:  
+    {2024-04-12: {rain: false, temp: 54, maxTemp: 59, minTemp: 48}
 
-console.log("JS is running!");
+ * If there is an absence of data (no temp data, or PRCP data),
+ * null values are returned. For example if no temp nor PRCP data was returned from API call,
+ * The output would be:
+ *  {2024-04-12: {rain: null, temp: null, maxTemp: null, minTemp: null}}
 
-// Helper function
+ * If no data is passed in from the NCDC API call, returns: "No weather data to process"
+ */ 
+
+// Helper function used to find the median temperature for a day
 function findMedian(arr) {
     // 1. Sort the array in ascending order.
 const sortedArr = arr.slice().sort((a, b) => a - b);
@@ -24,7 +40,7 @@ if (length % 2 === 0) {
 
 
 function processADay(pointDate, data) {
-    // Summarize a days data received from NOAA NCDC API call.
+    // Summarize one days data as received from NOAA NCDC API call.
 
     if (!data){
         return "No weather data to process"
@@ -90,16 +106,22 @@ function processADay(pointDate, data) {
     let dayTMAX = null;
     let dayTMIN = null;
 
+    // create a dayTAVG if there is are TAVG data points
     if (pointTAVG.length > 0) {
         dayTAVG =  findMedian(pointTAVG);
-        dayTMIN = Math.min(...pointTAVG) || null;
-        dayTMAX = Math.max(...pointTAVG) || null;
-    }
+        // Create a dayTMIN & dayTMAX if there are more than one TAVG data points
+        // NOTE: not pulling TAVG nor TMAX from NOAA/NCDC as those data points are too rare
+        if (pointTAVG.length > 1) {
+            dayTMIN = Math.min(...pointTAVG) || null;
+            dayTMAX = Math.max(...pointTAVG) || null;
+            }  
+    }   // END if
 
     // Create result object with the date as key
     const result = {};
     result[pointDate] = { "rain": dayPRCPbool, "temp": dayTAVG, "maxTemp": dayTMAX, "minTemp": dayTMIN };
     
+    // Return an object containing a days summary
     return result;
 }   // END processDay()
 

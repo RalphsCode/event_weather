@@ -8,7 +8,6 @@ let fetchHasStarted = false;
 
 const GetWxData = () => {
     const [loading, setLoading] = useState(true);
-    const [wxData, setWxData] = useState([]);
     const [progress, setProgress] = useState({ current: 0, total: 0 });
     const [requestStatuses, setRequestStatuses] = useState({});
     const navigate = useNavigate(); // For navigation
@@ -58,7 +57,6 @@ const GetWxData = () => {
                         
                         // Make sure we have data before processing
                         if (response && response.data) {
-                            console.log(`Records received for ${date}:`, response.data.length);
                             
                             // Process the data
                             const processedResult = processADay(date, response.data);
@@ -98,8 +96,6 @@ const GetWxData = () => {
                 
                 // Check if we got any results
                 if (allResults.length > 0) {
-                    setWxData(allResults);
-                    
                     // Store the processed results in localStorage for access in the results page
                     localStorage.setItem('weatherResults', JSON.stringify(allResults));
                     
@@ -109,11 +105,11 @@ const GetWxData = () => {
                         navigate('/results');
                     }, 1000); // 1 second delay
                 } else {
-                    console.error("No weather data was successfully processed");
+                    console.error("No weather data returned from the NCDC API call, or processADay function.");
                 }
                 
             } catch (err) {
-                console.error("Error in overall fetch process:", err);
+                console.error("Error in overall NCDC API fetch process in GetWxData.js:", err);
             } finally {
                 setLoading(false);
             }
