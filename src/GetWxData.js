@@ -70,7 +70,7 @@ const GetWxData = () => {
                             // Update status to "complete"
                             setRequestStatuses(prev => ({
                                 ...prev,
-                                [date]: `\u2713 complete - ${response.data.length} weather history data points found.`
+                                [date]: `\u2713 complete. A total of ${response.data.length} weather history data points found.`
                             }));
                         } else {
                             console.error(`No data in response for ${date}`);
@@ -98,7 +98,6 @@ const GetWxData = () => {
                 
                 // Check if we got any results
                 if (allResults.length > 0) {
-                    console.log("All processed results:", allResults);
                     setWxData(allResults);
                     
                     // Store the processed results in localStorage for access in the results page
