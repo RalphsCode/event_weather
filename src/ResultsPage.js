@@ -4,22 +4,30 @@ import processAnnuals from './processAnnuals';
 
 const ResultsPage = () => {
     const [weatherResults, setWeatherResults] = useState([]);
+    const [expectation, setExpectation] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Retrieve the stored results
+        // Retrieve the summarized yearly weather results for each year
         const storedResults = localStorage.getItem('weatherResults');
         
         if (storedResults) {
             try {
                 const parsedResults = JSON.parse(storedResults);
+                // Set weatherResults to be the summarized yearly weather results
                 setWeatherResults(parsedResults);
-                // Process the daily summaries into an overall result array
-                processAnnuals(parsedResults);
+                // Process the summarized yearly results into a single prediction
+                const dailyExpectation = processAnnuals(parsedResults);
+                // Check for any missing data (NaN)
+                for (const key in dailyExpectation) {
+                    if (isNaN(dailyExpectation[key]) || dailyExpectation[key] === null ) {
+                      dailyExpectation[key] = "Unfortunatly, no weather history could be found for this."; 
+                    } } // END for loop...
+                setExpectation(dailyExpectation);
             } catch (err) {
                 console.error("Error parsing stored weather results:", err);
             }
-        }
+        }   // END if...
         
         setLoading(false);
     }, []);
@@ -41,18 +49,41 @@ const ResultsPage = () => {
     return (
         <div className="results-container">
             <h1>Weather Analysis Results</h1>
+            <div>
+                        {/* Map over the day expectation summaries */}
+                        {Object.entries(expectation).map(([key, value]) => {
+                            // Skip the date property as it's already displayed as the title
+                            if (key === 'date') return null;
+                            
+                            return (
+                                <div key={key}>
+                                    {/* Separate the camelCase words in the key with a space */ }
+                                    <h3>{key.replace(/([A-Z])/, ' $1').trim()}</h3>
+                                    {/* present the result */ }
+                                    {typeof value === 'object' ? (
+                                        <pre>{JSON.stringify(value, null, 2)}</pre>
+                                    ) : (
+                                        <p>{value}</p>
+                                    )}
+                                </div>
+                            );
+                        })}     {/* END map over the expectiations array */}
+
+                    </div>
+            
             {/* Map over the result array elements (day summaries) */}
             {weatherResults.map((result, index) => (
                 <div key={index} className="result-card">
                     
                     <div className="result-grid">
-                        {/* Map over the day summary element */}
+                        {/* Map over the individual day summary elements */}
                         {Object.entries(result).map(([key, value]) => {
-                            // Skip the date property as it's already displayed as the title
+                            // Skip the date
                             if (key === 'date') return null;
                             
                             return (
                                 <div key={key} className="result-item">
+                                    { /* put a space infront of Upper case in camelCase */ }
                                     <h3>{key.replace(/([A-Z])/g, ' $1').trim()}</h3>
                                     {typeof value === 'object' ? (
                                         <pre>{JSON.stringify(value, null, 2)}</pre>
@@ -61,7 +92,8 @@ const ResultsPage = () => {
                                     )}
                                 </div>
                             );
-                        })}
+                        })}    {/* // END map */} 
+
                     </div>
                 </div>
             ))}     {/* END weatherResults.map */}

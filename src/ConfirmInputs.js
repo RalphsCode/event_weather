@@ -79,9 +79,11 @@ const ConfirmInputs = () => {
                 <b>Address:</b> {locationData.formattedAddress}<br /><br />
 
                 <button onClick={() => window.history.back()}>Change</button>
+                &nbsp; &nbsp;
                 <button onClick={() => window.location.href = "/wxData"}>Yep! Looks Good</button><br /><br />
 
                 <b>Event Date:</b> {localStorage.getItem('eventDate')}<br />
+                <b>Event:</b> {localStorage.getItem('eventType')}<br />
                 <b>Search Years:</b> {localStorage.getItem('searchYears')}
             </p>
 

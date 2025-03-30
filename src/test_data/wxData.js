@@ -597,7 +597,23 @@ export const sampleData4 = [
 	}
 ]	// END sampleData4
 
+
 // Data for processAnnuals.test.js
+
 export const sampleData5 = [
-	{"2024-04-12":{"rain":false,"temp":54,"maxTemp":59,"minTemp":48}},{"2023-04-12":{"rain":false,"temp":54,"maxTemp":58,"minTemp":49}},{"2022-04-12":{"rain":false,"temp":47,"maxTemp":60,"minTemp":35}}
+	{"2024-04-12":{"rain":false,"temp":54,"maxTemp":59,"minTemp":48}},
+	{"2023-04-12":{"rain":false,"temp":54,"maxTemp":58,"minTemp":49}},
+	{"2022-04-12":{"rain":false,"temp":47,"maxTemp":60,"minTemp":35}}
+];
+
+export const sampleData6 = [
+	{"2024-12-02":{"rain":null,"temp":null,"maxTemp":null,"minTemp":null}},
+	{"2023-12-02":{"rain":null,"temp":null,"maxTemp":null,"minTemp":null}},
+	{"2022-12-02":{"rain":null,"temp":null,"maxTemp":null,"minTemp":null}}
+];
+
+export const sampleData7 = [
+	{"2024-12-02":{"rain":null,"temp":54,"maxTemp":null,"minTemp":null}},
+	{"2023-12-02":{"rain":null,"temp":63,"maxTemp":null,"minTemp":null}},
+	{"2022-12-02":{"rain":null,"temp":49,"maxTemp":null,"minTemp":null}}
 ];
