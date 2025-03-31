@@ -46,7 +46,7 @@ function processAnnuals(weatherResults) {
         
         const TAVGsum = TAVGarr.reduce((total, num) => total + num, 0); 
         // Calculate the final expected Temp
-        const expectedTemp = (TAVGsum / TAVGarr.length).toFixed(1);
+        const expectedTemp = (TAVGsum / TAVGarr.length).toFixed(0);
 
         // Calculate the final expected TMAX 
         let expectedTMAX = null;
@@ -55,7 +55,7 @@ function processAnnuals(weatherResults) {
             const TMAXsum = TMAXarr.reduce((total, num) => total + num, 0); 
             expectedTMAX = (TMAXsum / TMAXarr.length).toFixed(1);
             console.log("Annual TMAX calculated from daily TMAXarr:", expectedTMAX);
-        } else if (TAVGarr.length > 0) {
+        } else if (TAVGarr.length > 2) {
             // If no daily TMAX records, but there are daily TAVG records
             expectedTMAX = Math.max(...TAVGarr) || null;
             console.log("No daily TMAXarr, expectedTMAX calculated from daily TAVGarr:", expectedTMAX);
@@ -71,7 +71,7 @@ function processAnnuals(weatherResults) {
             const TMINsum = TMINarr.reduce((total, num) => total + num, 0); 
             expectedTMIN = (TMINsum / TMINarr.length).toFixed(1);
             console.log("Annual TMIN calculated from daily TMINarr:", expectedTMIN);
-        } else if (TAVGarr.length > 0) {
+        } else if (TAVGarr.length > 2) {
             // If no daily TMIN records, but there are daily TAVG records
             expectedTMIN = Math.min(...TAVGarr) || null;
             console.log("No daily TMINarr, expectedTMIN calculated from daily TAVGarr:", expectedTMIN);

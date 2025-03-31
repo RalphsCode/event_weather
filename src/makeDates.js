@@ -3,6 +3,8 @@
 * Output is an array of X date strings eg: ['2024-01-16', '2023-01-16', '2022-01-16', ...]
 * The numer of elements is determined by the inYears argument.
 * The datesArray is added to Local Storage.
+*
+* Function is called by ConfirmInputs.js
 */
 
 function makeDates(eventDate, inYears) {

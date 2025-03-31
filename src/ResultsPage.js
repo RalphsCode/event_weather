@@ -50,24 +50,11 @@ const ResultsPage = () => {
         <div className="results-container">
             <h1>Weather Analysis Results</h1>
             <div>
-                        {/* Map over the day expectation summaries */}
-                        {Object.entries(expectation).map(([key, value]) => {
-                            // Skip the date property as it's already displayed as the title
-                            if (key === 'date') return null;
-                            
-                            return (
-                                <div key={key}>
-                                    {/* Separate the camelCase words in the key with a space */ }
-                                    <h3>{key.replace(/([A-Z])/, ' $1').trim()}</h3>
-                                    {/* present the result */ }
-                                    {typeof value === 'object' ? (
-                                        <pre>{JSON.stringify(value, null, 2)}</pre>
-                                    ) : (
-                                        <p>{value}</p>
-                                    )}
-                                </div>
-                            );
-                        })}     {/* END map over the expectiations array */}
+                <p>The lowest temp I found on this day was: {expectation.expectedTMIN}° F</p>
+                <h3>You should expect a temperature of: <b>{expectation.expectedTemp}° F</b></h3>
+                <p>The highest temp I found on this day was: {expectation.expectedTMAX}° F</p>
+                < br/>
+                <h3>The chance of precipitation (rain, etc) is: {expectation.rainPercent}% </h3>
 
                     </div>
             

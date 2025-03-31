@@ -3,7 +3,7 @@ import axios from 'axios';
 import processADay from './processADay';
 import { useNavigate } from 'react-router-dom'; // Import for navigation
 
-// Create a flag outside the component to track if the fetch has been initiated
+// A flag to track if the fetch has been initiated
 let fetchHasStarted = false;
 
 const GetWxData = () => {
@@ -28,10 +28,10 @@ const GetWxData = () => {
                 // Get data from localStorage 
                 const datesArr = JSON.parse(localStorage.getItem("datesArr")) || ['2023-06-01', '2022-06-01', '2021-06-01'];
                 if (datesArr.length > 10) {
-                    datesArr.length =10
-                } else if (datesArr.length < 0){
-                    console.log("The date array is invalid. Exiting the process.");
-                    return;
+                    datesArr.length = 10;
+                } else if (datesArr.length === 0){
+                    console.log("The date array is invalid.");
+                    throw new RangeError("The Date Array length is out of acceptable range");
                 }
                 const FIPS = localStorage.getItem('FIPS') || '';
                 

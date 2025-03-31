@@ -66,9 +66,9 @@ const ConfirmInputs = () => {
     localStorage.setItem("locationData", JSON.stringify(locationData));
 
     const eventDate = localStorage.getItem('eventDate');
-    const searchYears = localStorage.getItem('searchYears');
-    
-    const datesArr = makeDates(eventDate, searchYears);
+    const searchYears = Number(localStorage.getItem('searchYears'));
+    // Call function to build an array of dates to search
+    makeDates(eventDate, searchYears);
 
     return (
         <div>
