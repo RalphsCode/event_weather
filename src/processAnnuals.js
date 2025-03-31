@@ -47,11 +47,38 @@ function processAnnuals(weatherResults) {
         const TAVGsum = TAVGarr.reduce((total, num) => total + num, 0); 
         // Calculate the final expected Temp
         const expectedTemp = (TAVGsum / TAVGarr.length).toFixed(1);
-        // Calculate the final expected TMAX and TMIN
-        const TMAXsum = TMAXarr.reduce((total, num) => total + num, 0); 
-        const expectedTMAX = (TMAXsum / TMAXarr.length).toFixed(1);
-        const TMINsum = TMINarr.reduce((total, num) => total + num, 0); 
-        const expectedTMIN = (TMINsum / TMINarr.length).toFixed(1);
+
+        // Calculate the final expected TMAX 
+        let expectedTMAX = null;
+        if (TMAXarr.length > 0) {
+            // If there are daily TMAX records
+            const TMAXsum = TMAXarr.reduce((total, num) => total + num, 0); 
+            expectedTMAX = (TMAXsum / TMAXarr.length).toFixed(1);
+            console.log("Annual TMAX calculated from daily TMAXarr:", expectedTMAX);
+        } else if (TAVGarr.length > 0) {
+            // If no daily TMAX records, but there are daily TAVG records
+            expectedTMAX = Math.max(...TAVGarr) || null;
+            console.log("No daily TMAXarr, expectedTMAX calculated from daily TAVGarr:", expectedTMAX);
+        } else {
+            // if no daily TMAX nor daily TAVG records
+            console.log("No daily TMAX nor TAVG data, expectedTMAX is null");
+        };
+
+        // Calculate the final expected TMIN
+        let expectedTMIN = null;
+        if (TMINarr.length > 0) {
+            // If there are daily TMIN records
+            const TMINsum = TMINarr.reduce((total, num) => total + num, 0); 
+            expectedTMIN = (TMINsum / TMINarr.length).toFixed(1);
+            console.log("Annual TMIN calculated from daily TMINarr:", expectedTMIN);
+        } else if (TAVGarr.length > 0) {
+            // If no daily TMIN records, but there are daily TAVG records
+            expectedTMIN = Math.min(...TAVGarr) || null;
+            console.log("No daily TMINarr, expectedTMIN calculated from daily TAVGarr:", expectedTMIN);
+        } else {
+            // if no daily TMIN nor daily TAVG records
+            console.log("No daily TMIN nor TAVG data, expectedTMIN is null");
+        };
 
         //  HOW TO DISPLAY THE DEGREES CIRCLE "\u00B0 F");
 

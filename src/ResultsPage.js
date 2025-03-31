@@ -21,7 +21,7 @@ const ResultsPage = () => {
                 // Check for any missing data (NaN)
                 for (const key in dailyExpectation) {
                     if (isNaN(dailyExpectation[key]) || dailyExpectation[key] === null ) {
-                      dailyExpectation[key] = "Unfortunatly, no weather history could be found for this."; 
+                      dailyExpectation[key] = "Unfortunatly, not enough weather data to make this prediction."; 
                     } } // END for loop...
                 setExpectation(dailyExpectation);
             } catch (err) {

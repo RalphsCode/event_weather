@@ -27,6 +27,12 @@ const GetWxData = () => {
             try {
                 // Get data from localStorage 
                 const datesArr = JSON.parse(localStorage.getItem("datesArr")) || ['2023-06-01', '2022-06-01', '2021-06-01'];
+                if (datesArr.length > 10) {
+                    datesArr.length =10
+                } else if (datesArr.length < 0){
+                    console.log("The date array is invalid. Exiting the process.");
+                    return;
+                }
                 const FIPS = localStorage.getItem('FIPS') || '';
                 
                 // Initialize progress tracking
