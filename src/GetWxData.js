@@ -74,7 +74,7 @@ const GetWxData = () => {
                             // Update status to "complete"
                             setRequestStatuses(prev => ({
                                 ...prev,
-                                [date]: `\u2713 complete. A total of ${response.data.length} weather history data points found.`
+                                [date]: `\u2713 COMPLETE\u00A0 \u00A0 - ${response.data.length} relevant weather history data sets found.`
                             }));
                         } else {
                             console.error(`No data in response for ${date}`);

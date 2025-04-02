@@ -34,6 +34,23 @@ const ConfirmInputs = () => {
         fetchData();
     }, []); // Effect runs once on mount
 
+    // Do a useEffect to Call the sunrise/sunset API server
+    useEffect(() =>{
+        const fetchSunTime = async () => {
+            try {
+                // Only proceed if we have location data with coordinates
+                if (!locationData || !locationData.lat || !locationData.lng) return;
+
+                const response = await axios.get(`http://localhost:3001/api/solunar?lat=${locationData.lat}&lng=${locationData.lng}`);
+                const solunar = response.data;
+                localStorage.setItem('solunar', JSON.stringify(solunar));
+            } catch (err) {
+                console.log("Error trying to execute sunrise/sunset API call:", err);
+            }
+        }   // END fetchSunTime()
+        fetchSunTime();
+    }, [locationData]);     // END useEffect
+
     // Do a useEffect to Call the FIPS API server
     useEffect(() =>{
         const fetchFIPS = async () => {
