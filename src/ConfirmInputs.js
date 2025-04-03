@@ -41,7 +41,9 @@ const ConfirmInputs = () => {
                 // Only proceed if we have location data with coordinates
                 if (!locationData || !locationData.lat || !locationData.lng) return;
 
-                const response = await axios.get(`http://localhost:3001/api/solunar?lat=${locationData.lat}&lng=${locationData.lng}`);
+                const eventDate = localStorage.getItem('eventDate');
+
+                const response = await axios.get(`http://localhost:3001/api/solunar?lat=${locationData.lat}&lng=${locationData.lng}&date=${eventDate}`);
                 const solunar = response.data;
                 localStorage.setItem('solunar', JSON.stringify(solunar));
             } catch (err) {

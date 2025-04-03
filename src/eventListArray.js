@@ -24,5 +24,7 @@ export const eventListArr = [
     "Cruise",
     "Destination Wedding/Honeymoon",
     "Retreat (wellness, yoga, etc.)",
-    "Charity Event/Fundraiser"
+    "Charity Event/Fundraiser",
+    "My Birthday",
+    "Birthday"
 ];

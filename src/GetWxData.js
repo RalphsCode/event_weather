@@ -122,7 +122,7 @@ const GetWxData = () => {
         };
 
         fetchWeatherData();
-    }, [navigate]); // Add navigate to dependencies
+    }, [navigate]); // navigate as dependency
     
     if (loading) {
         return (
