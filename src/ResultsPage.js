@@ -77,11 +77,11 @@ const ResultsPage = () => {
 
         <h1>On {monthNames[monthNum]} {dayNum} in {eventLocation} expect:</h1>
         <div>
-            <h3><b>{expectation.rainPercent}%</b> Chance of precipitation (rain, etc),&nbsp;
+            <h3><b>{expectation.rainPercent}%</b> Chance of precipitation (ie: rain, etc),&nbsp;
             Temperature: <b>{expectation.expectedTemp}° F</b>
             </h3>
-            <p>The lowest temp I found on this day was: {expectation.expectedTMIN}° F</p>
-            <p>The highest temp I found on this day was: {expectation.expectedTMAX}° F</p>
+            <p>The lowest temp I found there on this day was: {expectation.expectedTMIN}° F</p>
+            <p>The highest temp I found there on this day was: {expectation.expectedTMAX}° F</p>
             <p>Sunrise: {solunar.sunrise}<br/>Sunset:&nbsp; {solunar.sunset}</p>
         </div>
 
