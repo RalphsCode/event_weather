@@ -1,4 +1,14 @@
-// Page asking the user to confirm their inputs
+/** Page asking the user to confirm their inputs.
+* User directed here from the EventForm Component / page.
+* 1. UseEffect to find the location from Google Maps API
+* 2. UseEffect to find solunar from API - Saved to local storage
+* 3. UseEffect to get ZipRef data - Saved to local storage
+* 4. Verify location - Save to local storage
+* 5. Call function to build an array of dates to search
+* 6. Display findings and ask user to verify. 
+* 7. Display google map of USA
+* 8. User goes back to EventForm or forward to GetWxData
+*/
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GoogleMap from './GoogleMap';
@@ -53,27 +63,28 @@ const ConfirmInputs = () => {
         fetchSunTime();
     }, [locationData]);     // END useEffect
 
-    // Do a useEffect to Call the FIPS API server
+    // Do a useEffect to Call the ZipRef API server
     useEffect(() =>{
-        const fetchFIPS = async () => {
+        const fetchZipRef = async () => {
             try {
                 // Only proceed if we have location data with coordinates
                 if (!locationData || !locationData.lat || !locationData.lng) return;
 
-                const response = await axios.get(`http://localhost:3001/api/fips?lat=${locationData.lat}&lng=${locationData.lng}`);
-                const FIPS = response.data;
-                localStorage.setItem("FIPS", FIPS);
+                const response = await axios.get(`http://localhost:3001/api/ZipRef?lat=${locationData.lat}&lng=${locationData.lng}`);
+                const ZipRef = response.data;
+                localStorage.setItem("ZipRef", ZipRef);
             } catch (err) {
-                console.log("Error trying to execute fetchFIPS API call:", err);
+                console.log("Error trying to execute fetch ZipRef API call:", err);
             }
-        }   // END fetchFIPS()
-        fetchFIPS();
+        }   // END fetchZipRef()
+        fetchZipRef();
     }, [locationData]);     // END useEffect
 
 
+    // Check a location was found, its in the USA, then save to local storage
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
-    if (!locationData) return <p>No location data found.</p>;
+    if (!locationData) return <p>Ooops!! We could not find that location. please try again.</p>;
     if (!locationData.formattedAddress.toLowerCase().includes("usa") && !locationData.formattedAddress.toLowerCase().includes("united states") ) {
         return ( 
             <>
@@ -81,14 +92,16 @@ const ConfirmInputs = () => {
                 <button onClick={() => window.history.back()}>Go Back</button>
             </>
         )}
-
+    // Save location data to local storage
     localStorage.setItem("locationData", JSON.stringify(locationData));
 
+    // Call function to build an array of dates to search
     const eventDate = localStorage.getItem('eventDate');
     const searchYears = Number(localStorage.getItem('searchYears'));
-    // Call function to build an array of dates to search
     makeDates(eventDate, searchYears);
 
+    // Display findings and ask user to verify. 
+    // Also display google map of USA
     return (
         <div>
             <h2>Does this look right?</h2>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import processAnnuals from './processAnnuals';
+import { postData } from './postData';
 
 const ResultsPage = () => {
     const [weatherResults, setWeatherResults] = useState([]);
@@ -24,12 +25,31 @@ const ResultsPage = () => {
                       dailyExpectation[key] = "Unfortunatly, not enough weather data to make this prediction."; 
                     } } // END for loop...
                 setExpectation(dailyExpectation);
+                localStorage.setItem('prediction', JSON.stringify(dailyExpectation));
             } catch (err) {
                 console.error("Error parsing stored weather results:", err);
             }
         }   // END if...
         
         setLoading(false);
+
+        // Send search and wx data to database after component renders.
+        const submitData = async () => {
+            try {
+                const result = await postData();
+                console.log("Data submitted successfully:", result);
+            } catch (error) {
+                console.error("Failed to submit data:", error);
+            }
+        };
+    
+        // Timeout to ensure everything is loaded before sending data
+        const timer = setTimeout(() => {
+            submitData();
+        }, 200);
+    
+    return () => clearTimeout(timer);
+
     }, []);
 
     if (loading) {
@@ -77,11 +97,13 @@ const ResultsPage = () => {
 
         <h1>On {monthNames[monthNum]} {dayNum} in {eventLocation} expect:</h1>
         <div>
-            <h3><b>{expectation.rainPercent}%</b> Chance of precipitation (ie: rain, etc),&nbsp;
-            Temperature: <b>{expectation.expectedTemp}° F</b>
+            <h3>Temperature: <b>{expectation.expectedTemp}° F.</b></h3>
+            <h3><b>{expectation.rainPercent}%</b> Chance of precipitation.
             </h3>
+            
             <p>The lowest temp I found there on this day was: {expectation.expectedTMIN}° F</p>
             <p>The highest temp I found there on this day was: {expectation.expectedTMAX}° F</p>
+
             <p>Sunrise: {solunar.sunrise}<br/>Sunset:&nbsp; {solunar.sunset}</p>
         </div>
 
@@ -91,6 +113,7 @@ const ResultsPage = () => {
             <thead>
                 <tr>
                 <th>Date</th>
+                <th>Data count</th>
                 <th>Temperature</th>
                 <th>Precipitation?</th>
                 <th>Highest Temp</th>
@@ -102,6 +125,7 @@ const ResultsPage = () => {
                 Object.entries(result).map(([date, data]) => (
                     <tr key={date}>
                     <td>{date}</td>
+                    <td>{data.records}</td>
                     <td>{data.temp !== null ? `${data.temp}° F` : 'N/A'}</td>
                     <td>{data.rain ? 'Yes' : 'No'}</td>
                     <td>{data.maxTemp !== null ? `${data.maxTemp}° F` : 'N/A'}</td>

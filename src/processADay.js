@@ -45,6 +45,10 @@ function processADay(pointDate, data) {
     if (!data){
         return "No weather data to process"
     }
+
+    const numResults = data.length;
+    console.log("numResults:", numResults);
+
     // Arrays to store the daily PRCP & TAVG weather readings:
     const pointPRCP = [];
     const pointTAVG = [];
@@ -83,7 +87,7 @@ function processADay(pointDate, data) {
 
     // If there is PRCP data
     if (pointPRCP.length > 0) {
-        // Defaule to no rain for day
+        // Default to no rain for day
         dayPRCPbool = false;
         // Count how many days had rain reported
         for (const bool of pointPRCP) {
@@ -119,7 +123,7 @@ function processADay(pointDate, data) {
 
     // Create result object with the date as key
     const result = {};
-    result[pointDate] = { "rain": dayPRCPbool, "temp": dayTAVG, "maxTemp": dayTMAX, "minTemp": dayTMIN };
+    result[pointDate] = { "records": numResults, "rain": dayPRCPbool, "temp": dayTAVG, "maxTemp": dayTMAX, "minTemp": dayTMIN };
     
     // Return an object containing a days summary
     return result;

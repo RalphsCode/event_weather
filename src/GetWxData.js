@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import processADay from './processADay';
-import { useNavigate } from 'react-router-dom'; // Import for navigation
+import { useNavigate } from 'react-router-dom';
 
 // A flag to track if the fetch has been initiated
 let fetchHasStarted = false;
@@ -33,7 +33,7 @@ const GetWxData = () => {
                     console.log("The date array is invalid.");
                     throw new RangeError("The Date Array length is out of acceptable range");
                 }
-                const FIPS = localStorage.getItem('FIPS') || '';
+                const ZipRef = localStorage.getItem('ZipRef') || '';
                 
                 // Initialize progress tracking
                 const initialStatuses = {};
@@ -59,7 +59,7 @@ const GetWxData = () => {
                     try {
                         // Make the API request and await the response
                         console.log(`Making API request for date: ${date}`);
-                        const response = await axios.get(`http://localhost:3001/api/noaa?date=${date}&FIPS=${FIPS}`);
+                        const response = await axios.get(`http://localhost:3001/api/noaa?date=${date}&ZipRef=${ZipRef}`);
                         
                         // Make sure we have data before processing
                         if (response && response.data) {
