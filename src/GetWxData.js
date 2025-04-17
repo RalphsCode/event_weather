@@ -1,7 +1,20 @@
+/** Retrive the WX data from NOAA for each date in the dates array.
+ * UseEffect to get the form data from localStorage
+ * loop through the dates in the dates array and send the API request to NOAA.
+ * The API request is sent via the RESTful API on the backend,
+ * The days weather is sent to procssADay to get processed
+ * THe processed day is pushed into the allResults array.
+ * The allResultrs array is pushed into localStorage as weatherResults.
+ * The user is shown the progress bars. 
+ * Once all data retrieved user is forwarded to ResultsPage. 
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import processADay from './processADay';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // A flag to track if the fetch has been initiated
 let fetchHasStarted = false;
@@ -38,7 +51,7 @@ const GetWxData = () => {
                 // Initialize progress tracking
                 const initialStatuses = {};
                 datesArr.forEach(date => {
-                    initialStatuses[date] = "waiting";
+                    initialStatuses[date] = "Waiting";
                 });
                 setRequestStatuses(initialStatuses);
                 setProgress({ current: 0, total: datesArr.length });
@@ -60,6 +73,21 @@ const GetWxData = () => {
                         // Make the API request and await the response
                         console.log(`Making API request for date: ${date}`);
                         const response = await axios.get(`http://localhost:3001/api/noaa?date=${date}&ZipRef=${ZipRef}`);
+
+                        if (response.status === 503) {
+                            // Show toast notification for 503 error
+                            toast.error('Ooopps!! Weather data servers responded that they need a moment. Redirecting, to previous page, please try again...', {
+                              position: "top-center",
+                              autoClose: 3000,
+                              hideProgressBar: false,
+                              closeOnClick: true,
+                              pauseOnHover: true,
+                              draggable: true,
+                              onClose: () => {
+                                // Navigate back to the form page after toast closes
+                                navigate('/form');
+                              }
+                            } ) }    // END if...
                         
                         // Make sure we have data before processing
                         if (response && response.data) {

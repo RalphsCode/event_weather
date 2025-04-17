@@ -29,7 +29,7 @@ const ConfirmInputs = () => {
                     throw new Error('Location data not found. Please go back and fill the form.');
                 }
                 
-                // Fetch data from my API
+                // Fetch location data from google maps accessed via my API
                 const response = await axios.get(`http://localhost:3001/api/google?input=${location}`);
                 console.log("Just queried the Google API");
                 setLocationData(response.data);
@@ -70,6 +70,7 @@ const ConfirmInputs = () => {
                 // Only proceed if we have location data with coordinates
                 if (!locationData || !locationData.lat || !locationData.lng) return;
 
+                // Use an API call to return the ZipRef for the Lat/Long of the location
                 const response = await axios.get(`http://localhost:3001/api/ZipRef?lat=${locationData.lat}&lng=${locationData.lng}`);
                 const ZipRef = response.data;
                 localStorage.setItem("ZipRef", ZipRef);
@@ -81,7 +82,7 @@ const ConfirmInputs = () => {
     }, [locationData]);     // END useEffect
 
 
-    // Check a location was found, its in the USA, then save to local storage
+    // Check a location was found, & that its in the USA, then save to local storage
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
     if (!locationData) return <p>Ooops!! We could not find that location. please try again.</p>;

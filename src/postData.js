@@ -1,9 +1,8 @@
-/** Function to generate the search data to populate the searches and wz-data tables in the database.
-Also sends the data to the API to post to the db.
+/** Function to accumulate the search data used to populate the searches and wx-data tables in the database.
+Also sends the data to the API hosted on the backend that posts the data to the db.
 
 Sample Data:
   "user_id":"1", 
-  "ip_addr":"192.168.0.1", 
 	"evt_location_ent":"grand canyon", 
 	"evt_location_act":"Grand Canyon National Park", 
 	"evt_date": "2025-06-21", 

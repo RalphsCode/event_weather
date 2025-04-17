@@ -1,10 +1,10 @@
 /** 
  * Process and summarize all the results received for a particular day.
  * 
- * Data to process is received from an NOAA NCDC API call for data relating to one day.
+ * Data to process is received from an NOAA API call for data relating to one day.
  * Pass in:
  *  (1) the date used in the weather request, 
- *  (2) The data received from the NCDC API call.
+ *  (2) The data received from the NOAA API call.
  * 
  * This function is called from the GetWxData.js component.
  * 
@@ -17,7 +17,7 @@
  * The output would be:
  *  {2024-04-12: {rain: null, temp: null, maxTemp: null, minTemp: null}}
 
- * If no data is passed in from the NCDC API call, returns: "No weather data to process"
+ * If no data is passed in from the NOAA API call, returns: "No weather data to process"
  */ 
 
 // Helper function used to find the median temperature for a day

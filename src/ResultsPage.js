@@ -1,3 +1,10 @@
+/** Presents the Prediction to the user.
+ * UseEffect to retrieve the summarized yearly weather results for each year.
+ * Process the summarized yearly results into a single prediction (processAnnuals function).
+ * Send search & wx data to the database (postData function).
+ * Display the weather prediction & weather from previous years.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import processAnnuals from './processAnnuals';
@@ -10,20 +17,19 @@ const ResultsPage = () => {
 
     useEffect(() => {
         // Retrieve the summarized yearly weather results for each year
+        // And send search & wx data to the database
+
         const storedResults = localStorage.getItem('weatherResults');
         
         if (storedResults) {
             try {
                 const parsedResults = JSON.parse(storedResults);
-                // Set weatherResults to be the summarized yearly weather results
+                // Set weatherResults in useState to be the summarized yearly weather results
                 setWeatherResults(parsedResults);
+
                 // Process the summarized yearly results into a single prediction
                 const dailyExpectation = processAnnuals(parsedResults);
-                // Check for any missing data (NaN)
-                for (const key in dailyExpectation) {
-                    if (isNaN(dailyExpectation[key]) || dailyExpectation[key] === null ) {
-                      dailyExpectation[key] = "Unfortunatly, not enough weather data to make this prediction."; 
-                    } } // END for loop...
+
                 setExpectation(dailyExpectation);
                 localStorage.setItem('prediction', JSON.stringify(dailyExpectation));
             } catch (err) {
@@ -36,7 +42,7 @@ const ResultsPage = () => {
         // Send search and wx data to database after component renders.
         const submitData = async () => {
             try {
-                const result = await postData();
+                const result = await postData();    // Function that sends data via API to DB
                 console.log("Data submitted successfully:", result);
             } catch (error) {
                 console.error("Failed to submit data:", error);
@@ -50,12 +56,14 @@ const ResultsPage = () => {
     
     return () => clearTimeout(timer);
 
-    }, []);
+    }, []);     // END UseEffect
 
+    // Display Loading as needed
     if (loading) {
         return <div>Loading results...</div>;
     }
 
+    // If there are no weather results, snd brief message
     if (!weatherResults || weatherResults.length === 0) {
         return (
             <div className="no-results">
@@ -66,6 +74,7 @@ const ResultsPage = () => {
         );
     }
 
+    // Pull the details from localstorage
     const solunar = JSON.parse(localStorage.getItem('solunar'));
     const locationObj = JSON.parse(localStorage.getItem('locationData'));
     const eventLocation = locationObj.location;
@@ -89,6 +98,8 @@ const ResultsPage = () => {
         "12":"December"
     }
 
+
+    // Display the weather prediction & weather from previous years
     return (
         <div>
         <div>
@@ -97,7 +108,7 @@ const ResultsPage = () => {
 
         <h1>On {monthNames[monthNum]} {dayNum} in {eventLocation} expect:</h1>
         <div>
-            <h3>Temperature: <b>{expectation.expectedTemp}° F.</b></h3>
+            <h3>Temperature: <b>{expectation.expectedTemp}° F</b></h3>
             <h3><b>{expectation.rainPercent}%</b> Chance of precipitation.
             </h3>
             
@@ -113,7 +124,6 @@ const ResultsPage = () => {
             <thead>
                 <tr>
                 <th>Date</th>
-                <th>Data count</th>
                 <th>Temperature</th>
                 <th>Precipitation?</th>
                 <th>Highest Temp</th>
@@ -125,7 +135,6 @@ const ResultsPage = () => {
                 Object.entries(result).map(([date, data]) => (
                     <tr key={date}>
                     <td>{date}</td>
-                    <td>{data.records}</td>
                     <td>{data.temp !== null ? `${data.temp}° F` : 'N/A'}</td>
                     <td>{data.rain ? 'Yes' : 'No'}</td>
                     <td>{data.maxTemp !== null ? `${data.maxTemp}° F` : 'N/A'}</td>
