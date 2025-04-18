@@ -13,8 +13,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import processADay from './processADay';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+    
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 // A flag to track if the fetch has been initiated
 let fetchHasStarted = false;
@@ -24,7 +26,8 @@ const GetWxData = () => {
     const [progress, setProgress] = useState({ current: 0, total: 0 });
     const [requestStatuses, setRequestStatuses] = useState({});
     const navigate = useNavigate(); // For navigation
-    
+
+
     useEffect(() => {
         const fetchWeatherData = async () => {
             // If we've already started fetching data, don't do it again
@@ -72,22 +75,7 @@ const GetWxData = () => {
                     try {
                         // Make the API request and await the response
                         console.log(`Making API request for date: ${date}`);
-                        const response = await axios.get(`http://localhost:3001/api/noaa?date=${date}&ZipRef=${ZipRef}`);
-
-                        if (response.status === 503) {
-                            // Show toast notification for 503 error
-                            toast.error('Ooopps!! Weather data servers responded that they need a moment. Redirecting, to previous page, please try again...', {
-                              position: "top-center",
-                              autoClose: 3000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              onClose: () => {
-                                // Navigate back to the form page after toast closes
-                                navigate('/form');
-                              }
-                            } ) }    // END if...
+                        const response = await axios.get(`${API_BASE_URL}/api/noaa?date=${date}&ZipRef=${ZipRef}`);
                         
                         // Make sure we have data before processing
                         if (response && response.data) {
@@ -111,14 +99,27 @@ const GetWxData = () => {
                                 [date]: "error"
                             }));
                         }
-                    } catch (err) {
-                        console.error(`Error retrieving data for date ${date}:`, err);
-                        
-                        // Update status to "error"
-                        setRequestStatuses(prev => ({
-                            ...prev,
-                            [date]: "error"
-                        }));
+                    } catch (error) {
+                        // Check if the error is a response error from the server
+                        if (error.response && error.response.status === 503) {
+                            // Show toast notification for 503 error
+                            toast.error('Ooopps!! Weather data servers responded that they need a moment. Redirecting, to previous page, please try again...', {
+                                position: "top-center",
+                                autoClose: 3000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                onClose: () => {
+                                    // Navigate back to the form page after toast closes
+                                    navigate('/form');
+                                }
+                            });
+                        } else {
+                            // Handle other types of errors
+                            console.error("API request error:", error);
+                            // Show a generic error toast if needed
+                        }
                     }
                     
                     // Update progress

@@ -20,6 +20,8 @@ Sample Data:
 */
 
 import axios from 'axios';
+    
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export async function postData(){
   try {
@@ -41,9 +43,10 @@ export async function postData(){
     const sunset = solunar.sunset;
     const weatherResults = JSON.parse(localStorage.getItem("weatherResults"));
 
-      // Send the data to the API on the backend
+  
+    // Send the data to the API on the backend
 
-      const response = await axios.post('http://localhost:3001/api/search', {
+    const response = await axios.post(`${API_BASE_URL}/api/search`, {
         user_id,
         evt_location_ent,
         evt_location_act,
