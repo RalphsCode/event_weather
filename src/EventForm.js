@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { eventListArr } from "./eventListArray";
+import {PreviousSearches} from "./PreviousSearches";
 
 function EventForm() {
     // useState to store the form data
@@ -28,8 +29,18 @@ function EventForm() {
         }
 
         try {
+
+            // Handle a leap year day (02-29 change to 02-28)
+            let formDate = formData.eventDate;
+            const mmdd = formDate.slice(5);
+            if (mmdd == '02-29') {
+                const yyyy = formDate.slice(0,4);
+                formDate = yyyy + "-02-28";
+                console.log("Event date changed to 02/28 as was leap day: Feb. 29th.")
+            };  // END leap year
+            
             localStorage.setItem("eventLocation", formData.eventLocation);
-            localStorage.setItem("eventDate", formData.eventDate);
+            localStorage.setItem("eventDate", formDate);
             localStorage.setItem("searchYears", formData.searchYears);
             localStorage.setItem("eventType", formData.eventType);
 
@@ -149,6 +160,8 @@ function EventForm() {
                 <br />
                 <button type="submit">Go!</button>
             </form>
+                    {/* Display the user's 5 most recent previous searches */}
+            <PreviousSearches user_id={1} />
         </div>
     );
 }
