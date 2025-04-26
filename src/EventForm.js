@@ -116,7 +116,7 @@ function EventForm() {
                 />
                 < br/>
 
-                <label htmlFor="eventType">What is the event? </label>
+                <label htmlFor="eventType">What's the event? </label>
                 <div style={{ position: 'relative' }}>
                     <input 
                         type="text"

@@ -62,7 +62,7 @@ const GetWxData = () => {
                 // Array to collect all processed results
                 const allResults = [];
                 
-                // Process each date sequentially
+                // Process each date sequentially / Loop through the days in the datesArr
                 for (let i = 0; i < datesArr.length; i++) {
                     const date = datesArr[i];
                     
@@ -75,7 +75,7 @@ const GetWxData = () => {
                     try {
                         // Make the API request and await the response
                         console.log(`Making API request for date: ${date}`);
-                        const response = await axios.get(`${API_BASE_URL}/api/noaa?date=${date}&ZipRef=${ZipRef}`);
+                        const response = await axios.get(`${API_BASE_URL}/API/noaa?date=${date}&ZipRef=${ZipRef}`);
                         
                         // Make sure we have data before processing
                         if (response && response.data) {

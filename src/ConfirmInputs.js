@@ -32,7 +32,7 @@ const ConfirmInputs = () => {
                 }
                 
                 // Fetch location data from google maps accessed via my API
-                const response = await axios.get(`${API_BASE_URL}/api/google?input=${location}`);
+                const response = await axios.get(`${API_BASE_URL}/API/google?input=${location}`);
                 console.log("Just queried the Google API");
                 setLocationData(response.data);
                 setLoading(false);
@@ -55,7 +55,7 @@ const ConfirmInputs = () => {
 
                 const eventDate = localStorage.getItem('eventDate');
 
-                const response = await axios.get(`${API_BASE_URL}/api/solunar?lat=${locationData.lat}&lng=${locationData.lng}&date=${eventDate}`);
+                const response = await axios.get(`${API_BASE_URL}/API/solunar?lat=${locationData.lat}&lng=${locationData.lng}&date=${eventDate}`);
                 const solunar = response.data;
                 localStorage.setItem('solunar', JSON.stringify(solunar));
             } catch (err) {
@@ -73,7 +73,7 @@ const ConfirmInputs = () => {
                 if (!locationData || !locationData.lat || !locationData.lng) return;
 
                 // Use an API call to return the ZipRef for the Lat/Long of the location
-                const response = await axios.get(`${API_BASE_URL}/api/ZipRef?lat=${locationData.lat}&lng=${locationData.lng}`);
+                const response = await axios.get(`${API_BASE_URL}/API/ZipRef?lat=${locationData.lat}&lng=${locationData.lng}`);
                 const ZipRef = response.data;
                 localStorage.setItem("ZipRef", ZipRef);
             } catch (err) {

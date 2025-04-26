@@ -4,7 +4,7 @@
 import React from 'react';
 import axios from 'axios';
 
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 // Private helper function - gets the user's searches from the DB via API
 async function fetchPreviousSearches(user_id) {
@@ -14,11 +14,11 @@ async function fetchPreviousSearches(user_id) {
     }
     
     // Fetch search history data from searches table via my API
-    const response = await axios.get(`http://localhost:3001/api/history?user_id=${user_id}`);
+    const response = await axios.get(`${API_BASE_URL}/searches/userHistory?user_id=${user_id}`);
     console.log("Just queried the Search History API");
     
     return response.data;
-  } catch (error) {
+  } catch (error) { 
     console.error("Error fetching search history:", error);
     throw error;
   }
@@ -57,33 +57,37 @@ export function PreviousSearches({ user_id }) {
   // return the search history table
   return (
     <div className="search-history-container">
-      <h2>Previous Searches</h2>
+      <h2>Your recent searches:</h2>
       <table className="search-history-table">
         <thead>
           <tr>
             <th>Location</th>
             <th>Event Date</th>
-            <th>Years Searched</th>
             <th>Expected Prec</th>
             <th>Expected Temp</th>
             <th>Max Temp</th>
             <th>Min Temp</th>
             <th>Sunrise</th>
             <th>Sunset</th>
+            <th>Years Searched</th>
           </tr>
         </thead>
         <tbody>
           {searchHistory.map((entry, index) => (
             <tr key={index}>
               <td>{entry.evt_location_act}</td>
-              <td>{entry.evt_date}</td>
-              <td>{entry.num_years}</td>
-              <td>{entry.rain_prcnt}</td>
+              <td>{new Date(entry.evt_date).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                    })}</td>
+              <td>{entry.rain_prcnt}% chance</td>
               <td>{entry.exp_temp}</td>
               <td>{entry.max_temp}</td>
               <td>{entry.min_temp}</td>
               <td>{entry.sunrise}</td>
               <td>{entry.sunset}</td>
+              <td>{entry.num_years}</td>
             </tr>
           ))}
         </tbody>

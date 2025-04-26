@@ -46,7 +46,7 @@ export async function postData(){
   
     // Send the data to the API on the backend
 
-    const response = await axios.post(`${API_BASE_URL}/api/search`, {
+    const response = await axios.post(`${API_BASE_URL}/searches`, {
         user_id,
         evt_location_ent,
         evt_location_act,
