@@ -18,7 +18,7 @@ function App() {
 
       {/* Use BrowserRouter to handle navigation */}
       <BrowserRouter>
-        {/* <NavBar /> */}
+        <NavBar />
         <Routes>
           <Route path="/form" element={<EventForm />} />
           <Route path="/confirm" element={<ConfirmInputs />} />
