@@ -4,6 +4,7 @@ import EventForm from './EventForm';
 import ConfirmInputs from './ConfirmInputs';
 import GetWxData from './GetWxData';
 import ResultsPage from './ResultsPage';
+import NavBar from './NavBar';
 
 // import NavBar from './NavBar';
 

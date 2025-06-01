@@ -3,7 +3,6 @@
  */
 
 import React from 'react';
-import './NavBar.css'; // Assuming you have a CSS file for styling
 
 function NavBar() {
   return (
@@ -31,7 +30,7 @@ function NavBar() {
           </a>
         </li>
         <li style={{ marginRight: '20px' }}>
-          <a href="/about" style={{
+          <a href="/" style={{
             color: 'white',
             textDecoration: 'none',
             fontSize: '1.1em',
@@ -40,8 +39,8 @@ function NavBar() {
             Log In
           </a>
         </li>
-        <li>
-          <a href="/contact" style={{
+        <li style={{ marginRight: '20px' }}>
+          <a href="/" style={{
             color: 'white',
             textDecoration: 'none',
             fontSize: '1.1em',
@@ -50,8 +49,8 @@ function NavBar() {
             Register
           </a>
         </li>
-        <li>
-          <a href="/contact" style={{
+        <li style={{ marginRight: '20px' }}>
+          <a href="/" style={{
             color: 'white',
             textDecoration: 'none',
             fontSize: '1.1em',
